@@ -38,6 +38,12 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Fruit
+    uniqueID: 1461297643
+    locked: 0
+  - name: Line
+    uniqueID: 1768093923
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
