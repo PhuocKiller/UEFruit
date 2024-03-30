@@ -8,11 +8,12 @@ public class FruitManager : MonoBehaviour
     [SerializeField] GameObject fruitPrefab;
     [Header("Settings")]
     [SerializeField] float fruitYPosition;
-    private bool isClick = false;
+    public bool isClick = false;
     GameObject fruitIns;
     Rigidbody2D fruitRigidIns;
     Vector2 posFruit;
     [SerializeField] GameObject line;
+   
 
     // Start is called before the first frame update
     void Start()
@@ -33,13 +34,24 @@ public class FruitManager : MonoBehaviour
             posFruit = new Vector2(GetClickedWorldPosition().x, fruitYPosition);
             fruitRigidIns.transform.position = posFruit;
         }
+        
+            
+        
         if (Input.GetMouseButtonUp(0))
         {
-            isClick = false;
-            fruitRigidIns.gravityScale = 1f;
-            
-
+            Fall();
         }
+    }
+   public void Fall()
+    {
+        isClick = false;
+        fruitRigidIns.gravityScale = 1f;
+        DissapearLine();
+    }
+    private void DissapearLine ()
+    {
+        line = GameObject.Find("Line");
+        Destroy(line);
     }
     public Vector2 GetClickedWorldPosition ()
     {
@@ -52,5 +64,6 @@ public class FruitManager : MonoBehaviour
             fruitRigidIns=fruitIns.GetComponent<Rigidbody2D>();
             fruitRigidIns.gravityScale = 0f;
     }
+    
     
 }
