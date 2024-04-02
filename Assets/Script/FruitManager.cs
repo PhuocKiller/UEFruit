@@ -1,69 +1,123 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Tilemaps;
 using UnityEngine;
 
 public class FruitManager : MonoBehaviour
 {
     [Header("Elements")]
-    [SerializeField] GameObject fruitPrefab;
-    [Header("Settings")]
-    [SerializeField] float fruitYPosition;
-    public bool isClick = false;
-    GameObject fruitIns;
-    Rigidbody2D fruitRigidIns;
-    Vector2 posFruit;
-    [SerializeField] GameObject line;
-   
+    [SerializeField] Fruit[] fruitPrefabs;
+    [SerializeField] LineRenderer fruitSpawnLine;
 
-    // Start is called before the first frame update
+    Fruit currentFruit;
+
+    [Header("Settings")]
+    [SerializeField] float fruitYSpawnPosition;
+    bool canManage;
+    bool isControlling;
+
     void Start()
     {
-        
+        canManage = true;
+        HideLine();
     }
 
-    // Update is called once per frame
     void Update()
+    {
+       if (canManage)
+        {
+            ManagePlayerInput();
+        }
+
+    }
+
+    void ManagePlayerInput()
     {
         if (Input.GetMouseButtonDown(0))
         {
-            isClick = true;
-            ManagerPlayerInput();
+            MouseDownCallback();
         }
-        if (isClick)
+        else if (Input.GetMouseButton(0))
         {
-            posFruit = new Vector2(GetClickedWorldPosition().x, fruitYPosition);
-            fruitRigidIns.transform.position = posFruit;
+            if (isControlling)
+            {
+                MouseDragCallback();
+            }
+            else MouseUpCallback();
         }
-        
-            
-        
-        if (Input.GetMouseButtonUp(0))
+        if (Input.GetMouseButtonUp(0) &&isControlling)
         {
-            Fall();
+            MouseUpCallback();
         }
+
+
     }
-   public void Fall()
+
+    void MouseDownCallback()
     {
-        isClick = false;
-        fruitRigidIns.gravityScale = 1f;
-        DissapearLine();
+        DisplayLine();
+        PlaceLineAtClickedPosition();
+        SpawnFruit();
+        isControlling = true;
     }
-    private void DissapearLine ()
+
+    void MouseDragCallback()
     {
-        line = GameObject.Find("Line");
-        Destroy(line);
+        PlaceLineAtClickedPosition();
+        currentFruit.MoveTo(GetSpawnPosition());
     }
-    public Vector2 GetClickedWorldPosition ()
+
+    void MouseUpCallback()
+    {
+        HideLine();
+        currentFruit.EnablePhysic();
+        canManage = false;
+        StartControlTimer();
+        isControlling = false;
+
+    }
+    void StartControlTimer ()
+    {
+        Invoke("StopControlTimer", 0.5f);
+    }
+    void StopControlTimer ()
+    {
+        canManage = true;
+    }
+
+    void PlaceLineAtClickedPosition()
+    {
+        fruitSpawnLine.SetPosition(0, GetSpawnPosition());
+        fruitSpawnLine.SetPosition(1, GetSpawnPosition() + Vector2.down * 15);
+    }
+
+    // lấy tọa độ chuột trong game world
+    Vector2 GetClickedWorldPosition()
     {
         return Camera.main.ScreenToWorldPoint(Input.mousePosition);
     }
-    private void  ManagerPlayerInput()
+
+    Vector2 GetSpawnPosition()
     {
-            posFruit = new Vector2(GetClickedWorldPosition().x, fruitYPosition);
-            fruitIns=Instantiate(fruitPrefab, posFruit, Quaternion.identity);
-            fruitRigidIns=fruitIns.GetComponent<Rigidbody2D>();
-            fruitRigidIns.gravityScale = 0f;
+        Vector2 pos = GetClickedWorldPosition();
+        pos.y = fruitYSpawnPosition;
+        return pos;
     }
-    
-    
+
+    void SpawnFruit()
+    {
+        Vector2 pos = GetSpawnPosition();
+        currentFruit = Instantiate(fruitPrefabs[Random.Range(0, 3)], pos, Quaternion.identity);
+    }
+
+    void HideLine()
+    {
+        fruitSpawnLine.enabled = false;
+    }
+
+    void DisplayLine()
+    {
+        fruitSpawnLine.enabled = true;
+    }
+
 }
