@@ -1,16 +1,20 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Fruit : MonoBehaviour
 {
-    
-    CircleCollider2D circleCollider;
+   
+    [Header("Data")]
+    [SerializeField] FruitType fruitType;
+    public static Action <Fruit, Fruit> onCollissionWithFruit;
+   
     // Start is called before the first frame update
     void Start()
     {
-        circleCollider=GetComponent<CircleCollider2D>();
-        
+      
     }
 
     // Update is called once per frame
@@ -18,12 +22,19 @@ public class Fruit : MonoBehaviour
     {
         
     }
-    private void OnCollisionEnter2D(Collision2D collision)
+    public void EnablePhysic()
     {
-        if (collision.gameObject.tag == "Wall")
+        GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
+    }
+    public void MoveTo (Vector2 targetPosition)
+    {
+        transform.position = targetPosition;
+    }
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.collider.TryGetComponent(out Fruit otherFruit))
         {
-            Debug.Log("va cham");
-            FindObjectOfType<FruitManager>().Fall();
+            onCollissionWithFruit?.Invoke(this, otherFruit);
         }
     }
 }
