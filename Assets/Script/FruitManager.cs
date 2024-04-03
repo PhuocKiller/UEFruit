@@ -9,17 +9,19 @@ public class FruitManager : MonoBehaviour
     [SerializeField] Fruit[] fruitPrefabs;
     [SerializeField] LineRenderer fruitSpawnLine;
 
-    Fruit currentFruit;
+    Fruit currentFruit; Fruit nextFruit; Fruit mergeFruit;
 
     [Header("Settings")]
     [SerializeField] float fruitYSpawnPosition;
     bool canManage;
     bool isControlling;
+    int numCurrentFruit; int numNextFruit;
 
     void Start()
     {
         canManage = true;
         HideLine();
+        SpawnNextFruit();
     }
 
     void Update()
@@ -28,8 +30,24 @@ public class FruitManager : MonoBehaviour
         {
             ManagePlayerInput();
         }
+       if (FindObjectOfType<MergeManager>().canMerge == true)
+        {
+            FindObjectOfType<MergeManager>().canMerge = false;
+            int x = MergeManager.numMergeFruit;
+            Debug.Log("x: " + x);
+            if (x==8)
+            {
+                
+                return;
+            }
+            mergeFruit =Instantiate(fruitPrefabs[x+1], MergeManager.posMergeFruit, Quaternion.identity);
+            mergeFruit.SetupFruit(x + 1);
+            mergeFruit.EnablePhysic();
+            
+        }
 
     }
+    
 
     void ManagePlayerInput()
     {
@@ -45,11 +63,10 @@ public class FruitManager : MonoBehaviour
             }
             else MouseUpCallback();
         }
-        if (Input.GetMouseButtonUp(0) &&isControlling)
+        if (Input.GetMouseButtonUp(0) && isControlling)
         {
             MouseUpCallback();
         }
-
 
     }
 
@@ -58,6 +75,8 @@ public class FruitManager : MonoBehaviour
         DisplayLine();
         PlaceLineAtClickedPosition();
         SpawnFruit();
+        Destroy(nextFruit.gameObject);
+        SpawnNextFruit();
         isControlling = true;
     }
 
@@ -72,13 +91,14 @@ public class FruitManager : MonoBehaviour
         HideLine();
         currentFruit.EnablePhysic();
         canManage = false;
-        StartControlTimer();
         isControlling = false;
+        StartControlTimer();
+        
 
     }
     void StartControlTimer ()
     {
-        Invoke("StopControlTimer", 0.5f);
+        Invoke("StopControlTimer", 1f);
     }
     void StopControlTimer ()
     {
@@ -103,13 +123,22 @@ public class FruitManager : MonoBehaviour
         pos.y = fruitYSpawnPosition;
         return pos;
     }
+    
 
     void SpawnFruit()
     {
+        numCurrentFruit = numNextFruit;
         Vector2 pos = GetSpawnPosition();
-        currentFruit = Instantiate(fruitPrefabs[Random.Range(0, 3)], pos, Quaternion.identity);
+        currentFruit = Instantiate(fruitPrefabs[numCurrentFruit], pos, Quaternion.identity);
+        currentFruit.SetupFruit(numCurrentFruit);
     }
+    void SpawnNextFruit()
+    {
+        numNextFruit = Random.Range(0, fruitPrefabs.Length);
 
+        nextFruit = Instantiate(fruitPrefabs[numNextFruit],new Vector2(1.2f,4.5f), Quaternion.identity);
+        nextFruit.GetComponent<Animator>().enabled = false;
+    }
     void HideLine()
     {
         fruitSpawnLine.enabled = false;

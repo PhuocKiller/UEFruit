@@ -8,13 +8,15 @@ public class Fruit : MonoBehaviour
 {
    
     [Header("Data")]
-    [SerializeField] FruitType fruitType;
+    [SerializeField] public FruitType fruitType;
     public static Action <Fruit, Fruit> onCollissionWithFruit;
-   
+    public int numCurrentFruit; int numNextFruit;
+    public Animator animator;
+
     // Start is called before the first frame update
     void Start()
     {
-      
+        animator=GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -34,7 +36,13 @@ public class Fruit : MonoBehaviour
     {
         if (other.collider.TryGetComponent(out Fruit otherFruit))
         {
-            onCollissionWithFruit?.Invoke(this, otherFruit);
+            onCollissionWithFruit(this, otherFruit);
         }
     }
+    public void SetupFruit(int numIndexFruit)
+    {
+        this.numCurrentFruit = numIndexFruit;
+        
+    }
+
 }

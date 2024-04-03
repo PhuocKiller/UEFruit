@@ -352,7 +352,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -3
   m_Sprite: {fileID: 21300000, guid: 677fb16910e68e248b14669337b35a1a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -520,6 +520,12 @@ MonoBehaviour:
   - {fileID: 7557549346008809050, guid: 67027995b2bade14d98a141cbb825d60, type: 3}
   - {fileID: 7557549346008809050, guid: a029fa07cd3cfeb4aad028c51d671500, type: 3}
   - {fileID: 7557549346008809050, guid: c3f427bb4d0f71c40ab76a46c6b23d13, type: 3}
+  - {fileID: 7557549346008809050, guid: 0e87f47f40e7729438a3421036f3f609, type: 3}
+  - {fileID: 7557549346008809050, guid: 0dc4e67007c0e6949a2553667cb01196, type: 3}
+  - {fileID: 7557549346008809050, guid: c9c4d260c2828684fb6ba7965795a90e, type: 3}
+  - {fileID: 7557549346008809050, guid: 017fb3cbe41563a4284e13f37254a53a, type: 3}
+  - {fileID: 7557549346008809050, guid: 3a753ec981479c043abb5c43c8ce484c, type: 3}
+  - {fileID: 7557549346008809050, guid: dbfd81d6dca476e4a89028390d258c83, type: 3}
   fruitSpawnLine: {fileID: 269015742}
   fruitYSpawnPosition: 3.5
 --- !u!1001 &1183001620
@@ -764,6 +770,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93ecd6ba1961c8647820af16d85b3a5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canMerge: 0
 --- !u!4 &1767359784 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 142892885466882477, guid: 0dd8a010164f1184696667b67b0c440c, type: 3}
