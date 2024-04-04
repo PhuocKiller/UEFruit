@@ -13,7 +13,7 @@ public class FruitManager : MonoBehaviour
 
     [Header("Settings")]
     [SerializeField] float fruitYSpawnPosition;
-    bool canManage;
+    public bool canManage;
     bool isControlling;
     int numCurrentFruit; int numNextFruit;
 
@@ -34,7 +34,7 @@ public class FruitManager : MonoBehaviour
         {
             FindObjectOfType<MergeManager>().canMerge = false;
             int x = MergeManager.numMergeFruit;
-            Debug.Log("x: " + x);
+            FindObjectOfType<UIManager>().AddScore(x + 1);
             if (x==8)
             {
                 
@@ -47,8 +47,6 @@ public class FruitManager : MonoBehaviour
         }
 
     }
-    
-
     void ManagePlayerInput()
     {
         if (Input.GetMouseButtonDown(0))
@@ -134,9 +132,9 @@ public class FruitManager : MonoBehaviour
     }
     void SpawnNextFruit()
     {
-        numNextFruit = Random.Range(0, fruitPrefabs.Length);
+        numNextFruit = Random.Range(0, 5);
 
-        nextFruit = Instantiate(fruitPrefabs[numNextFruit],new Vector2(1.2f,4.5f), Quaternion.identity);
+        nextFruit = Instantiate(fruitPrefabs[numNextFruit],new Vector2(2.5f,4.5f), Quaternion.identity);
         nextFruit.GetComponent<Animator>().enabled = false;
     }
     void HideLine()
