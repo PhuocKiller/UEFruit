@@ -128,7 +128,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6195210352427521300}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -194,6 +194,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: facb9e67f84b8a540a733c44c6da8901, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fruitType: 1
+  spriteRenderer: {fileID: 4668441245144057287}
 --- !u!95 &-8740997263574078366
 Animator:
   serializedVersion: 5
