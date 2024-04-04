@@ -30,18 +30,28 @@ public class UIManager : MonoBehaviour
         scoreText.text = scoreValue.ToString();
     }
     void ScoreRemain()
-    {
-        scoreRemain -= Time.deltaTime;
+    {if (scoreRemain>0)
+        {
+            scoreRemain -= Time.deltaTime;
+        }
+    else
+        {
+            scoreRemain = 0;
+            Time.timeScale = 0f;
+            FindObjectOfType<FruitManager>().canManage = false;
+        }
+
         timeValue.text = scoreRemain.ToString("0.0");
     }
     public void Pause ()
     {
         Time.timeScale = 0f;
+        FindObjectOfType<FruitManager>().canManage = false;
         if (!pauseScreen.activeInHierarchy)
         {
             pauseScreen.SetActive(true);
         }
-        FindObjectOfType<FruitManager>().canManage = false;
+        
     }
     public void ReSume ()
     {

@@ -10,6 +10,8 @@ public class Fruit : MonoBehaviour
     [Header("Data")]
     [SerializeField] public FruitType fruitType;
     public static Action <Fruit, Fruit> onCollissionWithFruit;
+    public delegate IEnumerator FruitDelegate (Fruit fruita, Fruit fruitb);
+    public static FruitDelegate fruitDelegate;
     public int numCurrentFruit; int numNextFruit;
     public Animator animator;
 
@@ -36,7 +38,7 @@ public class Fruit : MonoBehaviour
     {
         if (other.collider.TryGetComponent(out Fruit otherFruit))
         {
-            onCollissionWithFruit(this, otherFruit);
+            StartCoroutine(fruitDelegate(this, otherFruit));
         }
     }
     public void SetupFruit(int numIndexFruit)

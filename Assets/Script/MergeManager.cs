@@ -11,7 +11,7 @@ public class MergeManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Fruit.onCollissionWithFruit += CollissionBetweenFruitCallBack;
+       Fruit.fruitDelegate += CollissionBetweenFruitCallBack;
     }
 
     // Update is called once per frame
@@ -19,8 +19,9 @@ public class MergeManager : MonoBehaviour
     {
         
     }
-    private void CollissionBetweenFruitCallBack(Fruit sender, Fruit otherFruit)
+    private IEnumerator CollissionBetweenFruitCallBack(Fruit sender, Fruit otherFruit)
     {
+        yield return new WaitForSeconds(0.1f);
         if (sender.fruitType==otherFruit.fruitType)
         {
             posMergeFruit = sender.transform.position;
